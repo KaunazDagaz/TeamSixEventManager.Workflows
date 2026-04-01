@@ -1,0 +1,17 @@
+name: Restrict merges into main
+
+on:
+  workflow_call:
+
+jobs:
+  check-source-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Only allow merges from develop
+        if: github.head_ref != 'develop'
+        run: |
+          echo "PRs into main are only allowed from the 'develop' branch."
+          echo "Source branch: ${{ github.head_ref }}"
+          exit 1
+      - name: Allowed
+        run: echo "Source branch is 'develop'. Merge allowed."
